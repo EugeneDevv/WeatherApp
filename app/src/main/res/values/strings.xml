@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Weather App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lisbon">Lisbon</string>
+    <string name="madrid">Madrid</string>
+    <string name="paris">Paris</string>
+    <string name="berlin">Berlin</string>
+    <string name="copenhagen">Copenhagen</string>
+    <string name="london">London</string>
+    <string name="dublin">Dublin</string>
+    <string name="prague">Prague</string>
+    <string name="vienna">Vienna</string>
+</resources>
