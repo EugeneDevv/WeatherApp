@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/dark_background"
+    android:background="@color/colorPrimaryVariant"
     tools:context=".fragments.CurrentLocationFragment">
 
     <ScrollView
@@ -28,7 +28,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textColor="@color/off_white"
+                android:textColor="@color/textColor"
                 android:fontFamily="@font/ubuntu_bold"
                 android:textSize="@dimen/_40ssp"/>
             <TextView
@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toBottomOf="@id/temperature_tv"
                 app:layout_constraintStart_toStartOf="@id/temperature_tv"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textColor="@color/off_white"
+                android:textColor="@color/textColor"
                 android:fontFamily="@font/ubuntu_bold"
                 android:textSize="@dimen/_20ssp"/>
             <TextView
@@ -48,7 +48,7 @@
                 app:layout_constraintTop_toBottomOf="@id/condition_tv"
                 app:layout_constraintStart_toStartOf="@id/condition_tv"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textColor="@color/off_white"
+                android:textColor="@color/textColor"
                 android:fontFamily="@font/ubuntu_bold"
                 android:textSize="@dimen/_30ssp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -78,11 +78,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="No Internet"
+            android:text="@string/no_internet"
             android:drawableTop="@drawable/ic_error_icon"
             android:textStyle="bold"
             android:drawableTint="@color/off_white"
-            android:textColor="@color/off_white"
+            android:textColor="@color/textColor"
             android:textSize="14sp"/>
         <Button
             android:id="@+id/refresh_btn"
@@ -93,6 +93,6 @@
             android:text="Refresh"
             android:textColor="@color/off_white"
             android:layout_centerHorizontal="true"
-            android:background="@color/colorPrimaryVariant"/>
+            android:background="@color/colorPrimary"/>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

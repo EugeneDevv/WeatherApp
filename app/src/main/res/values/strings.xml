@@ -11,4 +11,8 @@
     <string name="dublin">Dublin</string>
     <string name="prague">Prague</string>
     <string name="vienna">Vienna</string>
+    <string name="current_location">Current Location</string>
+    <string name="cities">Cities</string>
+    <string name="rome">Rome</string>
+    <string name="no_internet">No Internet</string>
 </resources>
