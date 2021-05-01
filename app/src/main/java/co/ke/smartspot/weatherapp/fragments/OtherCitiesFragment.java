@@ -131,7 +131,7 @@ public class OtherCitiesFragment extends Helper {
             int id = weatherModel.get(0).getId();
             drawable = setImageIcon(id);
 
-            DecimalFormat df = new DecimalFormat("#.###");
+            DecimalFormat df = new DecimalFormat("#.##");
             df.setRoundingMode(RoundingMode.HALF_UP);
             windSpeed = df.format(Double.valueOf(weatherResponse.getWindModel().getSpeed()) * 1.60934);
 

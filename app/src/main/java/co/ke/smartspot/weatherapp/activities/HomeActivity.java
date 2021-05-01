@@ -40,27 +40,6 @@ public class HomeActivity extends AppCompatActivity {
         pagerAdapterInstance();
     }
 
-    private void onClicks() {
-        themeToggleIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (bool) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    themeToggleIV.setImageResource(R.drawable.ic_night);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("night_mode", false);
-                    editor.commit();
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    themeToggleIV.setImageResource(R.drawable.ic_night);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("night_mode", true);
-                    editor.commit();
-                }
-            }
-        });
-    }
-
     private void widgetHooks() {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
@@ -70,10 +49,29 @@ public class HomeActivity extends AppCompatActivity {
         bool = sharedPreferences.getBoolean("night_mode", false);
         if (bool){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);;
-            themeToggleIV.setImageResource(R.drawable.ic_night);
+            themeToggleIV.setImageResource(R.drawable.ic_sunny);
         }
     }
-
+    private void onClicks() {
+        themeToggleIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bool) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("night_mode", false);
+                    editor.commit();
+                    themeToggleIV.setImageResource(R.drawable.ic_night);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("night_mode", true);
+                    editor.commit();
+                    themeToggleIV.setImageResource(R.drawable.ic_sunny);
+                }
+            }
+        });
+    }
     private void pagerAdapterInstance() {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(),
                 tabLayout.getTabCount());
