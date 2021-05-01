@@ -8,20 +8,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -39,24 +36,18 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import co.ke.smartspot.weatherapp.R;
-import co.ke.smartspot.weatherapp.models.WeatherData;
 import co.ke.smartspot.weatherapp.models.WeatherModel;
 import co.ke.smartspot.weatherapp.utils.Helper;
 import co.ke.smartspot.weatherapp.viewmodels.CurrentLocationViewModel;
-import cz.msebera.android.httpclient.Header;
 
 public class CurrentLocationFragment extends Helper {
 
@@ -67,10 +58,11 @@ public class CurrentLocationFragment extends Helper {
     private String API_KEY;
     private CurrentLocationViewModel viewModel;
     ImageView weatherIconIV;
-    TextView temperatureTV, conditionTV, cityNameTV;
+    TextView temperatureTV, conditionTV, cityNameTV, pressureTV, humidityTV,
+            windTV, visibilityTV, dateTimeTV;
     Button refreshBtn;
     RelativeLayout relativeLayoutNoNet;
-    ProgressBar progressBarCurrent;
+    RelativeLayout progressBarCurrent;
 
     private String latitude;
     private String longitude;
@@ -88,14 +80,15 @@ public class CurrentLocationFragment extends Helper {
         relativeLayoutNoNet = view.findViewById(R.id.no_net_rl);
         refreshBtn = view.findViewById(R.id.refresh_btn);
         progressBarCurrent = view.findViewById(R.id.progress_bar_current);
-
-
+        pressureTV = view.findViewById(R.id.pressure_tv);
+        humidityTV = view.findViewById(R.id.humidity_tv);
+        windTV = view.findViewById(R.id.wind_tv);
+        visibilityTV = view.findViewById(R.id.visibility_tv);
+        dateTimeTV = view.findViewById(R.id.date_time_tv);
 
         variableHooks();
         onClicks();
-        if (isConnected(getContext())){
-            checkLocationPermission();
-        }
+        if (isConnected(getContext())) checkLocationPermission();
         //Return view
         return view;
     }
@@ -230,47 +223,83 @@ public class CurrentLocationFragment extends Helper {
         if (requestCode == 100 && (grantResults.length > 0) &&
                 (grantResults[0] + grantResults[1] == PackageManager.PERMISSION_GRANTED)){
             //When permissions are granted
-            //Call method
-//            getCurrentLocation();
             makeToast("Permission granted for location");
         } else {
             //When permission are denied
-            //Display toast
-//            makeToast("Permission denied for location");
-//            getActivity().finish();
         }
     }
 
     private void doTheNetworking() {
         viewModel.getCurrentWeatherData(latitude,longitude,API_KEY).observe(this, weatherResponse -> {
-            progressBarCurrent.setVisibility(View.GONE);
-            cityNameTV.setText("" + weatherResponse.getCity());
-            List<WeatherModel> hhlist = weatherResponse.getWeatherModel();
-            conditionTV.setText(""+hhlist.get(0).getDescription());
-            double temperature = Double.valueOf(weatherResponse.getTempModel().getTemp())-273.15;
-            int roundedValue=(int)Math.rint(temperature);
-            String converted = Integer.toString(roundedValue);
-            temperatureTV.setText(converted+"°C");
+            List<WeatherModel> weatherModel = weatherResponse.getWeatherModel();
+            String drawable;
+            String cityName;
+            String condition;
+            String temperature;
+            String pressure;
+            String humidity;
+            String windSpeed;
+            String visibility;
+            String dateTime;
 
-            int id = hhlist.get(0).getId();
-            String drawable = setImageIcon(id);
-            updateUI(drawable);
+            cityName = ""+weatherResponse.getCity();
+
+            condition = ""+weatherModel.get(0).getDescription();
+
+            double tempDouble = Double.valueOf(weatherResponse.getMainDetailsModel().getTemp())-273.15;
+            int roundedTemp=(int)Math.rint(tempDouble);
+            temperature = roundedTemp +"°C";
+
+            double humidityDouble = Double.valueOf(weatherResponse.getMainDetailsModel().getHumidity());
+            int roundedHumidity = (int)Math.rint(humidityDouble);
+            humidity = ""+ roundedHumidity;
+
+            double pressureDouble = Double.valueOf(weatherResponse.getMainDetailsModel().getPressure());
+            int roundedPressure = (int)Math.rint(pressureDouble);
+            pressure = ""+roundedPressure;
+
+            int id = weatherModel.get(0).getId();
+            drawable = setImageIcon(id);
+
+            DecimalFormat df = new DecimalFormat("#.###");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            windSpeed = df.format(Double.valueOf(weatherResponse.getWindModel().getSpeed()) * 1.60934);
+
+            int visibilityInt = weatherResponse.getVisibility() / 100;
+            visibility = Integer.toString(visibilityInt);
+
+            //Convert timestamp to proper format
+            Calendar cal = Calendar.getInstance();
+            try {
+                cal.setTimeInMillis(Long.parseLong(""+System.currentTimeMillis()));
+            } catch (Exception e){
+
+            }
+            dateTime = DateFormat.format("EEE, d MMM yyyy", cal).toString();
+
+            updateUI(drawable,cityName,condition,temperature,pressure,humidity,windSpeed,visibility,dateTime);
         });
     }
 
+    private void updateUI(String drawable, String city, String condition, String temperature, String pressure, String humidity, String windSpeed, String visibility, String dateTime) {
+        cityNameTV.setText(city);
+        conditionTV.setText(condition);
+        temperatureTV.setText(temperature);
+        pressureTV.setText(pressure);
+        humidityTV.setText(humidity);
+        windTV.setText(windSpeed);
+        visibilityTV.setText(visibility);
+        dateTimeTV.setText(dateTime);
 
-    private  void updateUI(String cond){
-
-        int resourceID = getResources().getIdentifier(cond,"drawable",getActivity().getPackageName());
+        int resourceID = getResources().getIdentifier(drawable,"drawable",getActivity().getPackageName());
         weatherIconIV.setImageResource(resourceID);
+        progressBarCurrent.setVisibility(View.GONE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (isConnected(getContext())){
-            checkLocationPermission();
-        }
+        if (isConnected(getContext())) checkLocationPermission();
     }
 
     @Override

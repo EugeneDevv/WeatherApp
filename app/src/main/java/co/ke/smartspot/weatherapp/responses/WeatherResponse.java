@@ -3,11 +3,10 @@ package co.ke.smartspot.weatherapp.responses;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-import java.util.Objects;
 
-import co.ke.smartspot.weatherapp.models.TempModel;
-import co.ke.smartspot.weatherapp.models.WeatherData;
+import co.ke.smartspot.weatherapp.models.MainDetailsModel;
 import co.ke.smartspot.weatherapp.models.WeatherModel;
+import co.ke.smartspot.weatherapp.models.WindModel;
 
 public class WeatherResponse {
 
@@ -18,7 +17,20 @@ public class WeatherResponse {
     private List<WeatherModel> weatherModel;
 
     @SerializedName("main")
-    private TempModel tempModel;
+    private MainDetailsModel mainDetailsModel;
+
+    @SerializedName("wind")
+    private WindModel windModel;
+
+    @SerializedName("visibility")
+    private int visibility;
+
+    @SerializedName("dt")
+    private int dateTime;
+
+    public int getDateTime() {
+        return dateTime;
+    }
 
     public String getCity() {
         return city;
@@ -28,7 +40,15 @@ public class WeatherResponse {
         return weatherModel;
     }
 
-    public TempModel getTempModel() {
-        return tempModel;
+    public WindModel getWindModel() {
+        return windModel;
+    }
+
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public MainDetailsModel getMainDetailsModel() {
+        return mainDetailsModel;
     }
 }

@@ -9,7 +9,7 @@ public class Helper extends Fragment {
     public static String setImageIcon(int condition) {
         if(condition>=0 && condition<=300)
         {
-            return "thunderstrom1";
+            return "thunderstorm";
         }
         else if(condition>=300 && condition<=500)
         {
@@ -42,7 +42,7 @@ public class Helper extends Fragment {
         }
         else  if(condition>=900 && condition<=902)
         {
-            return "thunderstrom1";
+            return "thunderstorm";
         }
         if(condition==903)
         {
@@ -54,7 +54,7 @@ public class Helper extends Fragment {
         }
         if(condition>=905 && condition<=1000)
         {
-            return "thunderstrom2";
+            return "thunderstorm";
         }
 
         return null;

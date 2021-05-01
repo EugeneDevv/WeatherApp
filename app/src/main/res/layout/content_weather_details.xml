@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,141 +14,138 @@
                 android:id="@+id/today"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="@string/today"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="@color/textColor"
                 android:fontFamily="@font/ubuntu_medium"
-                android:textSize="@dimen/_18ssp"/>
+                android:text="@string/today"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
             <TextView
                 android:id="@+id/city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/today"
-                app:layout_constraintStart_toStartOf="@id/today"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="city"
-                android:textColor="@color/textColor"
                 android:fontFamily="@font/ubuntu_bold"
-                android:textSize="@dimen/_28ssp"/>
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/_28ssp"
+                app:layout_constraintStart_toStartOf="@id/today"
+                app:layout_constraintTop_toBottomOf="@id/today"/>
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/date_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/city"
-                app:layout_constraintStart_toStartOf="@id/city"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="1-05-2021"
-                android:textColor="@color/textColorGray"
                 android:fontFamily="@font/ubuntu_regular"
-                android:textSize="@dimen/_18ssp"/>
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintStart_toStartOf="@id/city"
+                app:layout_constraintTop_toBottomOf="@id/city"/>
             <ImageView
+                android:id="@+id/weatherIcon_iv"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
-                android:id="@+id/weatherIcon_iv"
-                app:layout_constraintTop_toBottomOf="@id/date"
                 android:layout_marginTop="@dimen/_40sdp"
-                app:layout_constraintStart_toStartOf="@id/date"/>
+                app:layout_constraintStart_toStartOf="@id/date_time_tv"
+                app:layout_constraintTop_toBottomOf="@id/date_time_tv"/>
             <TextView
+                android:id="@+id/temp_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/temp_tv"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:fontFamily="@font/ubuntu_light"
                 android:text="20°C"
-                android:textSize="@dimen/_40ssp"
                 android:textAlignment="center"
                 android:textColor="@color/textColor"
-                android:fontFamily="@font/ubuntu_light"
-                app:layout_constraintTop_toTopOf="@id/weatherIcon_iv"
+                android:textSize="@dimen/_40ssp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/_20sdp"/>
+                app:layout_constraintTop_toTopOf="@id/weatherIcon_iv"/>
             <TextView
+                android:id="@+id/desc_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/desc_tv"
-                android:text="Light rain"
-                android:textSize="@dimen/_18ssp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/ubuntu_regular"
                 android:textAlignment="center"
                 android:textColor="@color/textColorGray"
-                android:fontFamily="@font/ubuntu_regular"
-                app:layout_constraintTop_toBottomOf="@id/temp_tv"
+                android:textSize="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="@id/temp_tv"
-                android:layout_marginTop="@dimen/_10sdp"/>
+                app:layout_constraintTop_toBottomOf="@id/temp_tv"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_40sdp"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/weatherIcon_iv"
-                android:layout_marginTop="@dimen/_40sdp">
+                app:layout_constraintTop_toBottomOf="@id/weatherIcon_iv">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
                         android:background="@drawable/shape_weather_details"
                         android:gravity="center"
-                        android:padding="@dimen/_5sdp"
                         android:orientation="vertical"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginBottom="@dimen/_20sdp">
+                        android:padding="@dimen/_5sdp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/wind"
                             android:fontFamily="@font/ubuntu_bold"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/wind"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                         <TextView
+                            android:id="@+id/wind_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="4.12"
-                            android:padding="@dimen/_2sdp"
                             android:fontFamily="@font/ubuntu_light"
-                            android:textSize="@dimen/_36ssp"
-                            android:textColor="@color/textColorGray"/>
+                            android:padding="@dimen/_2sdp"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/_36ssp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/kmh"
                             android:fontFamily="@font/ubuntu_regular"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/kmh"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_weather_details"
-                        android:padding="@dimen/_5sdp"
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_20sdp">
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:background="@drawable/shape_weather_details"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_5sdp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/humidity"
                             android:fontFamily="@font/ubuntu_bold"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/humidity"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                         <TextView
+                            android:id="@+id/humidity_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="40"
-                            android:padding="@dimen/_2sdp"
                             android:fontFamily="@font/ubuntu_light"
-                            android:textSize="@dimen/_36ssp"
-                            android:textColor="@color/textColorGray"/>
+                            android:padding="@dimen/_2sdp"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/_36ssp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/percentage"
                             android:fontFamily="@font/ubuntu_regular"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/percentage"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                     </LinearLayout>
                 </RelativeLayout>
                 <RelativeLayout
@@ -157,84 +154,87 @@
                     <LinearLayout
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
                         android:background="@drawable/shape_weather_details"
                         android:gravity="center"
-                        android:padding="@dimen/_5sdp"
                         android:orientation="vertical"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginBottom="@dimen/_5sdp">
+                        android:padding="@dimen/_5sdp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/visibility"
                             android:fontFamily="@font/ubuntu_bold"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/visibility"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                         <TextView
+                            android:id="@+id/visibility_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="409"
-                            android:padding="@dimen/_2sdp"
                             android:fontFamily="@font/ubuntu_light"
-                            android:textSize="@dimen/_36ssp"
-                            android:textColor="@color/textColorGray"/>
+                            android:padding="@dimen/_2sdp"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/_36ssp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/km"
                             android:fontFamily="@font/ubuntu_regular"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/km"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_weather_details"
-                        android:padding="@dimen/_5sdp"
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_5sdp">
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/shape_weather_details"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_5sdp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/pressure"
                             android:fontFamily="@font/ubuntu_bold"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/pressure"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                         <TextView
+                            android:id="@+id/pressure_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1034"
-                            android:padding="@dimen/_2sdp"
                             android:fontFamily="@font/ubuntu_light"
-                            android:textSize="@dimen/_36ssp"
-                            android:textColor="@color/textColorGray"/>
+                            android:padding="@dimen/_2sdp"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/_36ssp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/hpa"
                             android:fontFamily="@font/ubuntu_regular"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColor="@color/textColor"/>
+                            android:text="@string/hpa"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/_18ssp"/>
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <ProgressBar
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/progress_bar_current"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:indeterminateTint="@color/colorPrimary"/>
+        android:background="@color/colorPrimaryVariant">
+        <ProgressBar
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:indeterminateTint="@color/colorPrimary"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/no_net_rl"
         android:layout_width="match_parent"
@@ -246,21 +246,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/no_internet"
             android:drawableTop="@drawable/ic_error_icon"
-            android:textStyle="bold"
             android:drawableTint="@color/colorPrimary"
+            android:text="@string/no_internet"
             android:textColor="@color/textColor"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textStyle="bold"/>
         <Button
             android:id="@+id/refresh_btn"
-            android:layout_below="@id/refresh_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Refresh"
-            android:textColor="@color/off_white"
+            android:layout_below="@id/refresh_tv"
             android:layout_centerHorizontal="true"
-            android:background="@color/colorPrimary"/>
+            android:layout_marginTop="5dp"
+            android:background="@color/colorPrimary"
+            android:text="Refresh"
+            android:textColor="@color/off_white"/>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

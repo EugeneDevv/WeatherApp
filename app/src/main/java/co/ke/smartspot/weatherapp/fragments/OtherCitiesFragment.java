@@ -12,10 +12,10 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,25 +24,27 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import co.ke.smartspot.weatherapp.R;
 import co.ke.smartspot.weatherapp.models.WeatherModel;
 import co.ke.smartspot.weatherapp.utils.Helper;
 import co.ke.smartspot.weatherapp.viewmodels.CityViewModel;
-import co.ke.smartspot.weatherapp.viewmodels.CurrentLocationViewModel;
 
 public class OtherCitiesFragment extends Helper {
 
     //Initialize variables
     ImageView weatherIconIV;
     TextView lisbonTV, madridTV, berlinTV, parisTV, copenhagenTV, romeTV, londonTV, dublinTV,
-            pragueTV, viennaTV, temperatureTV, conditionTV, cityNameTV;
+            pragueTV, viennaTV, temperatureTV, conditionTV, cityNameTV, pressureTV, humidityTV,
+            windTV, visibilityTV, dateTimeTV;
     Button refreshBtn;
 //    RelativeLayout relativeLayoutNoNet;
-    ProgressBar progressBarCurrent;
+    RelativeLayout progressBarCurrent;
 
     ColorStateList defaultColor, selectedColor;
 
@@ -70,19 +72,20 @@ public class OtherCitiesFragment extends Helper {
         conditionTV = view.findViewById(R.id.desc_tv);
         cityNameTV = view.findViewById(R.id.city);
         weatherIconIV = view.findViewById(R.id.weatherIcon_iv);
-
-//        relativeLayoutNoNet = view.findViewById(R.id.no_net_rl_c);
-        refreshBtn = view.findViewById(R.id.refresh_btn_c);
-        progressBarCurrent = view.findViewById(R.id.progress_bar_current_c);
+        refreshBtn = view.findViewById(R.id.refresh_btn);
+        progressBarCurrent = view.findViewById(R.id.progress_bar_current);
+        pressureTV = view.findViewById(R.id.pressure_tv);
+        humidityTV = view.findViewById(R.id.humidity_tv);
+        windTV = view.findViewById(R.id.wind_tv);
+        visibilityTV = view.findViewById(R.id.visibility_tv);
+        dateTimeTV = view.findViewById(R.id.date_time_tv);
 
         variableHooks();
 
 
         //Method to implement OnClick Listeners
         onClicks();
-        if (isConnected(getContext())){
-            checkLocationPermission();
-        }
+        doTheNetworking(city);
         //Return view
         return view;
     }
@@ -95,77 +98,71 @@ public class OtherCitiesFragment extends Helper {
         viewModel = new ViewModelProvider(this).get(CityViewModel.class);
         city = "Lisbon";
     }
-    private boolean isConnected(Context homeActivity) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) homeActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo wifiConn = connectivityManager.getNetworkInfo(connectivityManager.TYPE_WIFI);
-        NetworkInfo mobileConn = connectivityManager.getNetworkInfo(connectivityManager.TYPE_MOBILE);
-
-        if ((wifiConn != null && wifiConn.isConnected()) || (mobileConn != null && mobileConn.isConnected())){
-//            relativeLayoutNoNet.setVisibility(View.GONE);
-            return true;
-        } else {
-//            showInternetDialog();
-//            relativeLayoutNoNet.setVisibility(View.VISIBLE);
-            return false;
-        }
-    }
-    private void showInternetDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Please connect to the internet to proceed")
-                .setCancelable(false)
-                .setPositiveButton("Connect", (dialogInterface, i) -> startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS)))
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-
-        //Creating dialog box
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED){
-            //When permission granted,
-            progressBarCurrent.setVisibility(View.VISIBLE);
-            doTheNetworking(city);
-        } else{
-            //When permission is not granted
-            //Request permission
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-        }
-    }
 
     private void doTheNetworking(String city) {
         viewModel.getCityWeatherData(city,API_KEY).observe(this, weatherResponse -> {
-            progressBarCurrent.setVisibility(View.GONE);
-            cityNameTV.setText("" + weatherResponse.getCity());
-            List<WeatherModel> hhlist = weatherResponse.getWeatherModel();
-            conditionTV.setText(""+hhlist.get(0).getDescription());
-            double temperature = Double.valueOf(weatherResponse.getTempModel().getTemp())-273.15;
-            int roundedValue=(int)Math.rint(temperature);
-            String converted = Integer.toString(roundedValue);
-            temperatureTV.setText(converted+"°C");
+            List<WeatherModel> weatherModel = weatherResponse.getWeatherModel();
+            String drawable;
+            String cityName;
+            String condition;
+            String temperature;
+            String pressure;
+            String humidity;
+            String windSpeed;
+            String visibility;
+            String dateTime;
 
-            int id = hhlist.get(0).getId();
-            String drawable = setImageIcon(id);
-            updateUI(drawable);
+            cityName = ""+weatherResponse.getCity();
+
+            condition = ""+weatherModel.get(0).getDescription();
+
+            double tempDouble = Double.valueOf(weatherResponse.getMainDetailsModel().getTemp())-273.15;
+            int roundedTemp=(int)Math.rint(tempDouble);
+            temperature = roundedTemp +"°C";
+
+            double humidityDouble = Double.valueOf(weatherResponse.getMainDetailsModel().getHumidity());
+            int roundedHumidity = (int)Math.rint(humidityDouble);
+            humidity = ""+ roundedHumidity;
+
+            double pressureDouble = Double.valueOf(weatherResponse.getMainDetailsModel().getPressure());
+            int roundedPressure = (int)Math.rint(pressureDouble);
+            pressure = ""+roundedPressure;
+
+            int id = weatherModel.get(0).getId();
+            drawable = setImageIcon(id);
+
+            DecimalFormat df = new DecimalFormat("#.###");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            windSpeed = df.format(Double.valueOf(weatherResponse.getWindModel().getSpeed()) * 1.60934);
+
+            int visibilityInt = weatherResponse.getVisibility() / 100;
+            visibility = Integer.toString(visibilityInt);
+
+            //Convert timestamp to proper format
+            Calendar cal = Calendar.getInstance();
+            try {
+                cal.setTimeInMillis(Long.parseLong(""+System.currentTimeMillis()));
+            } catch (Exception e){
+
+            }
+            dateTime = DateFormat.format("EEE, d MMM yyyy", cal).toString();
+
+            updateUI(drawable,cityName,condition,temperature,pressure,humidity,windSpeed,visibility,dateTime);
         });
     }
-    private  void updateUI(String cond){
+    private void updateUI(String drawable, String city, String condition, String temperature, String pressure, String humidity, String windSpeed, String visibility, String dateTime) {
+        cityNameTV.setText(city);
+        conditionTV.setText(condition);
+        temperatureTV.setText(temperature);
+        pressureTV.setText(pressure);
+        humidityTV.setText(humidity);
+        windTV.setText(windSpeed);
+        visibilityTV.setText(visibility);
+        dateTimeTV.setText(dateTime);
 
-        int resourceID = getResources().getIdentifier(cond,"drawable",getActivity().getPackageName());
+        int resourceID = getResources().getIdentifier(drawable,"drawable",getActivity().getPackageName());
         weatherIconIV.setImageResource(resourceID);
-
-
+        progressBarCurrent.setVisibility(View.GONE);
     }
     private void onClicks() {
         lisbonTV.setOnClickListener(v -> {
@@ -342,9 +339,7 @@ public class OtherCitiesFragment extends Helper {
     @Override
     public void onResume() {
         super.onResume();
-        if (isConnected(getContext())){
-            checkLocationPermission();
-        }
+            doTheNetworking(city);
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
