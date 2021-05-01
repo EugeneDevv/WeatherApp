@@ -15,4 +15,13 @@
     <string name="cities">Cities</string>
     <string name="rome">Rome</string>
     <string name="no_internet">No Internet</string>
+    <string name="today">Today</string>
+    <string name="wind">Wind</string>
+    <string name="kmh">kmh</string>
+    <string name="visibility">Visibility</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="percentage">%</string>
+    <string name="hpa">hPa</string>
+    <string name="km">km</string>
 </resources>

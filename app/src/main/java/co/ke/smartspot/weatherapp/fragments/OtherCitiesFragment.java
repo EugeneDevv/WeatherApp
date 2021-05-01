@@ -66,10 +66,10 @@ public class OtherCitiesFragment extends Helper {
         pragueTV = view.findViewById(R.id.prague_tv);
         viennaTV = view.findViewById(R.id.vienna_tv);
 
-        temperatureTV = view.findViewById(R.id.temperature_tv_c);
-        conditionTV = view.findViewById(R.id.condition_tv_c);
-        cityNameTV = view.findViewById(R.id.cityName_tv_c);
-        weatherIconIV = view.findViewById(R.id.weatherIcon_iv_c);
+        temperatureTV = view.findViewById(R.id.temp_tv);
+        conditionTV = view.findViewById(R.id.desc_tv);
+        cityNameTV = view.findViewById(R.id.city);
+        weatherIconIV = view.findViewById(R.id.weatherIcon_iv);
 
 //        relativeLayoutNoNet = view.findViewById(R.id.no_net_rl_c);
         refreshBtn = view.findViewById(R.id.refresh_btn_c);

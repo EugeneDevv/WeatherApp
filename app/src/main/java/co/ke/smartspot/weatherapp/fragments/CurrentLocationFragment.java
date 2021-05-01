@@ -81,16 +81,16 @@ public class CurrentLocationFragment extends Helper {
         // Initialize view
         View view = inflater.inflate(R.layout.fragment_current_location, container, false);
 
-        temperatureTV = view.findViewById(R.id.temperature_tv);
-        conditionTV = view.findViewById(R.id.condition_tv);
-        cityNameTV = view.findViewById(R.id.cityName_tv);
+        temperatureTV = view.findViewById(R.id.temp_tv);
+        conditionTV = view.findViewById(R.id.desc_tv);
+        cityNameTV = view.findViewById(R.id.city);
         weatherIconIV = view.findViewById(R.id.weatherIcon_iv);
         relativeLayoutNoNet = view.findViewById(R.id.no_net_rl);
         refreshBtn = view.findViewById(R.id.refresh_btn);
         progressBarCurrent = view.findViewById(R.id.progress_bar_current);
 
 
-//
+
         variableHooks();
         onClicks();
         if (isConnected(getContext())){

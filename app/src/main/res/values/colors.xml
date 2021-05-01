@@ -14,6 +14,8 @@
 <!--    <color name="colorPrimaryVariant2">#9485f9</color>-->
     <color name="black">#FF000000</color>
     <color name="textColor">#131314</color>
+    <color name="textColorGray">#9999A1</color>
+    <color name="textColorGray2">#E4E4EE</color>
     <color name="dark_background">#242343</color>
     <color name="white">#FFFFFFFF</color>
     <color name="off_white">#DDDADA</color>
